@@ -1,8 +1,14 @@
+
 import pandas as pd
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem import Descriptors, Lipinski
 from chembl_webresource_client.new_client import new_client
+from sklearn.feature_selection import VarianceThreshold
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 #Function definition
 def pIC50(input):
@@ -94,7 +100,7 @@ with open("thrombin_01_bioactivity_data_raw.csv", "r") as data:
     df = pd.DataFrame.from_dict(pd.read_csv(data))
 
 
-print(f'Unfiltered dataframe has {len(df)} rows')
+print('Unfiltered dataframe has {len(df)} rows')
 # df has 3420 rows, 46 columns
 
 # we check if df has any null values for standard_value and canonical_smiles
@@ -185,4 +191,38 @@ dataset3 = pd.concat([df3_X,df3_Y], axis=1)
 
 dataset3.to_csv('Training_data.csv', index=False)
 
+#Model building
+X = dataset3.drop('pIC50', axis=1) #X.shape = (3330, 881)
+Y = dataset3.pIC50 # Y.shape = (3330,)
 
+#Drop NaN values
+X.dropna(axis=0, inplace=True)
+Y.dropna(axis=0, inplace=True)
+
+# Remove low variance features
+selection = VarianceThreshold(threshold=(.8 * (1 - .8)))
+X = selection.fit_transform(X) # X.shape = (3330, 154)
+
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+# X_train.shape, Y_train.shape = ((2664, 154), (2664,))
+# X_test.shape, Y_test.shape = ((666, 154), (666,))
+
+# Building Regression Model using Random Forest
+model = RandomForestRegressor(n_estimators=100)
+model.fit(X_train, Y_train)
+r2 = model.score(X_test, Y_test)
+
+Y_pred = model.predict(X_test)
+
+# Scatter Plot of Experimental vs Predicted pIC50 Values
+sns.set(color_codes=True)
+sns.set_style("white")
+
+ax = sns.regplot(x=Y_test, y=Y_pred, scatter_kws={'alpha':0.4})
+ax.set_xlabel('Experimental pIC50', fontsize='large', fontweight='bold')
+ax.set_ylabel('Predicted pIC50', fontsize='large', fontweight='bold')
+ax.set_xlim(0, 12)
+ax.set_ylim(0, 12)
+ax.figure.set_size_inches(5, 5)
+
+plt.show()
