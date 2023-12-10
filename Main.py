@@ -123,8 +123,9 @@ df2_nr = df2.drop_duplicates(['canonical_smiles'])
 # remove unnecessary columns from the
 selection = ['molecule_chembl_id', 'canonical_smiles', 'standard_value']  # standard_type = IC50
 df3 = df2_nr[selection]
+print('Finally dataset has rows:',len(df3))
 
-
+# assign bioactivity class based on IC50 unit
 bioactivity_threshold = []
 for i in df3.standard_value:
     if float(i) >= 10000:
