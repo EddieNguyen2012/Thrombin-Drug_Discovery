@@ -410,19 +410,20 @@ Y_pred = model.predict(X_test)
 sns.set(color_codes=True)
 sns.set_style("white")
 
+plt.figure(figsize=(15, 10))
 ax = sns.regplot(x=Y_test, y=Y_pred, scatter_kws={'alpha':0.4})
 ax.set_xlabel('Experimental pIC50', fontsize='large', fontweight='bold')
 ax.set_ylabel('Predicted pIC50', fontsize='large', fontweight='bold')
 ax.set_xlim(0, 12)
 ax.set_ylim(0, 12)
 ax.figure.set_size_inches(5, 5)
-
+plt.savefig("predicted_plot.png")
 
 clf = LazyRegressor(verbose=0,ignore_warnings=True, custom_metric=None)
 models_train, predictions_train = clf.fit(X_train, X_train, Y_train, Y_train)
 models_test, predictions_test = clf.fit(X_train, X_test, Y_train, Y_test)
 
-plt.figure(figsize=(5, 10))
+plt.figure(figsize=(15, 10))
 sns.set_theme(style="whitegrid")
 ax = sns.barplot(y=predictions_train.index, x="R-Squared", data=predictions_train)
 ax.set(xlim=(0, 1))
@@ -430,5 +431,17 @@ ax.set(xlim=(0, 1))
 predictions_train.to_csv('predictions_train.csv', index=False)
 predictions_test.to_csv('predictions_test.csv', index=False)
 
-plt.show()
-#comparing regressors
+plt.savefig('comparisons_rsquared.png')
+
+plt.figure(figsize=(15, 10))
+sns.set_theme(style="whitegrid")
+ax = sns.barplot(y=predictions_train.index, x="RMSE", data=predictions_train)
+ax.set(xlim=(0, 10))
+
+plt.savefig('comparisons_rmse.png')
+
+plt.figure(figsize=(15, 10))
+sns.set_theme(style="whitegrid")
+ax = sns.barplot(y=predictions_train.index, x="Time Taken", data=predictions_train)
+ax.set(xlim=(0, 10))
+plt.savefig('comparisons_time_taken.png')
