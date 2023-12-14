@@ -153,23 +153,23 @@ target_query = target.search('thrombin')
 targets = pd.DataFrame.from_dict(target_query)
 
 # from above search find target of interest
-# print(targets[["organism","target_chembl_id","target_type"]])
+print(targets[["organism","target_chembl_id","target_type"]])
 
 # isolate Id CHEMBL204 in selected_target var
 thrombin_target = targets.target_chembl_id[1]
 
 # isolate bioactivity for target based on std type
-# activity = new_client.activity
-# result_search = activity.filter(target_chembl_id=thrombin_target ).filter(standard_type="IC50")
+activity = new_client.activity
+result_search = activity.filter(target_chembl_id=thrombin_target ).filter(standard_type="IC50")
 #
 
 # view result_search in dataframe
-#df_res = pd.DataFrame.from_dict(result_search)
+df_res = pd.DataFrame.from_dict(result_search)
 
 # result_search converted to dataframe everytime is computationally tedious
 # we hence save it as a csv file and view the resulting dataframe by opening df_with_IC50 file
 
-#df_res.to_csv('thrombin_01_bioactivity_data_raw.csv.csv', index = False)
+df_res.to_csv('thrombin_01_bioactivity_data_raw.csv.csv', index = False)
 
 with open("thrombin_01_bioactivity_data_raw.csv", "r") as data:
     df = pd.DataFrame.from_dict(pd.read_csv(data))
@@ -410,7 +410,7 @@ Y_pred = model.predict(X_test)
 sns.set(color_codes=True)
 sns.set_style("white")
 
-plt.figure(figsize=(15, 10))
+plt.figure(figsize=(16, 9))
 ax = sns.regplot(x=Y_test, y=Y_pred, scatter_kws={'alpha':0.4})
 ax.set_xlabel('Experimental pIC50', fontsize='large', fontweight='bold')
 ax.set_ylabel('Predicted pIC50', fontsize='large', fontweight='bold')
@@ -423,7 +423,7 @@ clf = LazyRegressor(verbose=0,ignore_warnings=True, custom_metric=None)
 models_train, predictions_train = clf.fit(X_train, X_train, Y_train, Y_train)
 models_test, predictions_test = clf.fit(X_train, X_test, Y_train, Y_test)
 
-plt.figure(figsize=(15, 10))
+plt.figure(figsize=(16, 9))
 sns.set_theme(style="whitegrid")
 ax = sns.barplot(y=predictions_train.index, x="R-Squared", data=predictions_train)
 ax.set(xlim=(0, 1))
@@ -433,14 +433,14 @@ predictions_test.to_csv('predictions_test.csv', index=False)
 
 plt.savefig('comparisons_rsquared.png')
 
-plt.figure(figsize=(15, 10))
+plt.figure(figsize=(16, 9))
 sns.set_theme(style="whitegrid")
 ax = sns.barplot(y=predictions_train.index, x="RMSE", data=predictions_train)
 ax.set(xlim=(0, 10))
 
 plt.savefig('comparisons_rmse.png')
 
-plt.figure(figsize=(15, 10))
+plt.figure(figsize=(16, 9))
 sns.set_theme(style="whitegrid")
 ax = sns.barplot(y=predictions_train.index, x="Time Taken", data=predictions_train)
 ax.set(xlim=(0, 10))
