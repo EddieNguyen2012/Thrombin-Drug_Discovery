@@ -1,6 +1,6 @@
 ## CS 123A Project, Fall 2023
 # Title: Comprehensive Quantitative Structure-Activity Relationship model utilizing Machine Learning to predict the bioactivity of molecular inhibitors against Thrombin
-#### By: Eddie Nguyen, Ananya Gupta and Shwethal Trikkanad
+#### By: Manh Tuong Nguyen, Ananya Gupta and Shwethal Trikkanad
 
 Our project aims to develop a Quantitative Structure-Activity Relationship (QSAR) model using machine learning algorithms to predict the bioactivity of molecular inhibitors against Thrombin (our target protein). The bioactivity of the potential drug would be predicted using Lipinski descriptors.
 
@@ -95,12 +95,6 @@ then saving the results to `descriptors_output.csv`.
 - Save the model comparison plot to `predictions_train.png`.
 
 These steps culminate in the construction of a Random Forest model, alongside a comparison of various regression models to predict the bioactivity of molecular inhibitors against Thrombin, offering insights into model performance and guiding future model selection.
-
-## Results
-
-- Optimize the Random Forest model parameters to enhance prediction accuracy.
-- Test the model on an external validation set for further assessment of its predictive capabilities.
-- Explore additional machine learning algorithms and compare their performance.
 
 ## Future Work
 
