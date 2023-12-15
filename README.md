@@ -96,6 +96,8 @@ then saving the results to `descriptors_output.csv`.
 
 These steps culminate in the construction of a Random Forest model, alongside a comparison of various regression models to predict the bioactivity of molecular inhibitors against Thrombin, offering insights into model performance and guiding future model selection.
 
+- The accuracy of the model was compared to other regressor models and reported with statistical measures such as R-square, adjusted R-Square, RMSE and Time Taken by each model
+
 ## Future Work
 
 - Optimize the Random Forest model parameters to enhance prediction accuracy.
