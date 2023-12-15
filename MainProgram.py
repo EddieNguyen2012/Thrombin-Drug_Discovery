@@ -406,7 +406,7 @@ r2 = model.score(X_test, Y_test)
 
 Y_pred = model.predict(X_test)
 
-# Scatter Plot of Experimental vs Predicted pIC50 Values
+# Plot of Experimental vs Predicted pIC50 Values
 sns.set(color_codes=True)
 sns.set_style("white")
 
@@ -414,6 +414,7 @@ plt.figure(figsize=(16, 9))
 ax = sns.regplot(x=Y_test, y=Y_pred, scatter_kws={'alpha':0.4})
 ax.set_xlabel('Experimental pIC50', fontsize='large', fontweight='bold')
 ax.set_ylabel('Predicted pIC50', fontsize='large', fontweight='bold')
+plt.title("Predicted Plot")
 ax.set_xlim(0, 12)
 ax.set_ylim(0, 12)
 ax.figure.set_size_inches(5, 5)
@@ -425,23 +426,26 @@ models_test, predictions_test = clf.fit(X_train, X_test, Y_train, Y_test)
 
 plt.figure(figsize=(16, 9))
 sns.set_theme(style="whitegrid")
-ax = sns.barplot(y=predictions_train.index, x="R-Squared", data=predictions_train)
+plt.title("Model Comparisons by R-Squared")
+ax = sns.barplot(y=predictions_test.index, x="R-Squared", data=predictions_test)
 ax.set(xlim=(0, 1))
 
-predictions_train.to_csv('predictions_train.csv', index=False)
-predictions_test.to_csv('predictions_test.csv', index=False)
+predictions_train.to_csv('predictions_train.csv')
+predictions_test.to_csv('predictions_test.csv')
 
 plt.savefig('comparisons_rsquared.png')
 
 plt.figure(figsize=(16, 9))
 sns.set_theme(style="whitegrid")
-ax = sns.barplot(y=predictions_train.index, x="RMSE", data=predictions_train)
+plt.title("Model Comparisons by RMSE")
+ax = sns.barplot(y=predictions_test.index, x="RMSE", data=predictions_test)
 ax.set(xlim=(0, 10))
 
 plt.savefig('comparisons_rmse.png')
 
 plt.figure(figsize=(16, 9))
 sns.set_theme(style="whitegrid")
-ax = sns.barplot(y=predictions_train.index, x="Time Taken", data=predictions_train)
+plt.title("Model Comparisons by Time taken")
+ax = sns.barplot(y=predictions_test.index, x="Time Taken", data=predictions_test)
 ax.set(xlim=(0, 10))
 plt.savefig('comparisons_time_taken.png')
